@@ -6,6 +6,8 @@ import cors from 'cors';
 import colors from 'colors';
 import connectDB from './config/db.js';
 
+import blogRoutes from './routes/blogRoutes.js';
+
 dotenv.config();
 
 connectDB();
@@ -21,9 +23,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // ROUTES
-app.get('/api', (req, res) => {
-	res.json({ time: Date().toString() });
-});
+app.use('/api', blogRoutes);
 
 // PORT
 const PORT = process.env.PORT || 8000;
