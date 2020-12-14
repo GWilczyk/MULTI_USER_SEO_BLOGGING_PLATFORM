@@ -1,14 +1,15 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
-import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import colors from 'colors';
+import connectDB from './config/db.js';
 
 dotenv.config();
 
-// APP
+connectDB();
+
 const app = express();
 
 // MIDDLEWARES
@@ -16,7 +17,7 @@ if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'));
 	app.use(cors({ origin: `${process.env.CLIENT_URL}` }));
 }
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(cookieParser());
 
 // ROUTES
