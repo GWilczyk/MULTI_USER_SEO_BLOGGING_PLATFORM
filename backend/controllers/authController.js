@@ -4,6 +4,16 @@ import generateToken from '../utils/generateToken.js';
 import User from '../models/usersModel.js';
 import shortId from 'shortid';
 
+// Needed to get process.env.JWT_SECRET in requireSignedIn
+import dotenv from 'dotenv';
+dotenv.config();
+
+export const requireSignedIn = expressJwt({
+	secret: process.env.JWT_SECRET,
+	algorithms: ['HS256'],
+	userProperty: 'auth',
+});
+
 export const signIn = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
 
@@ -22,6 +32,11 @@ export const signIn = asyncHandler(async (req, res) => {
 		res.status(401);
 		throw new Error('Invalid Email or Password');
 	}
+});
+
+export const signOut = asyncHandler(async (req, res) => {
+	await res.clearCookie('token');
+	res.json({ message: 'You signed out successfully' });
 });
 
 export const signUp = asyncHandler(async (req, res) => {

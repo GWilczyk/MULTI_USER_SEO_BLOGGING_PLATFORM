@@ -7,10 +7,10 @@ import colors from 'colors';
 import connectDB from './config/db.js';
 import { notFound, errorHandler } from './middlewares/errorMiddlewares.js';
 
+dotenv.config();
+
 import blogRoutes from './routes/blogRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-
-dotenv.config();
 
 connectDB();
 
