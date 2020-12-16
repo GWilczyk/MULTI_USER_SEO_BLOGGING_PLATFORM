@@ -7,6 +7,7 @@ import colors from 'colors';
 import connectDB from './config/db.js';
 
 import blogRoutes from './routes/blogRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
 
@@ -23,7 +24,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 // ROUTES
-app.use('/api', blogRoutes);
+app.use('/api/v1', blogRoutes);
+app.use('/api/v1/users', userRoutes);
 
 // PORT
 const PORT = process.env.PORT || 8000;
