@@ -78,7 +78,7 @@ userSchema.methods = {
 userSchema
 	.virtual('password')
 	.set(function (password) {
-		// Create temporary _password variable
+		// Create temporary '_password' variable
 		this._password = password;
 		// Generate salt
 		this.salt = this.makeSalt();
