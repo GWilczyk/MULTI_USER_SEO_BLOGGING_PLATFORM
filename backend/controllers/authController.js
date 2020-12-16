@@ -1,6 +1,28 @@
 import asyncHandler from 'express-async-handler';
+import expressJwt from 'express-jwt';
+import generateToken from '../utils/generateToken.js';
 import User from '../models/usersModel.js';
 import shortId from 'shortid';
+
+export const signIn = asyncHandler(async (req, res) => {
+	const { email, password } = req.body;
+
+	const user = await User.findOne({ email });
+
+	if (user && (await user.authenticate(password))) {
+		const token = generateToken(user._id);
+		const { _id, username, name, email, role } = user;
+
+		res.cookie('token', token, {
+			expiresIn: `${process.env.JWT_SECRET_EXPIRESIN}`,
+		});
+
+		return res.json({ token, _id, username, name, email, role });
+	} else {
+		res.status(401);
+		throw new Error('Invalid Email or Password');
+	}
+});
 
 export const signUp = asyncHandler(async (req, res) => {
 	const { email, name, password } = req.body;
