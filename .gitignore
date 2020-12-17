@@ -8,6 +8,7 @@
 /coverage
 
 # next.js
+/frontend/.gitignore
 /frontend/.next/
 /frontend/out/
 
