@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import Layout from '../components/Layout';
 
 const Index = () => {
@@ -8,7 +9,13 @@ const Index = () => {
 				<meta name='viewport' content='width=device-width, initial-scale=1.0' />
 			</Head>
 			<Layout>
-				<h1>Index Page</h1>
+				<h1>Home Page</h1>
+				<Link href='/signup'>
+					<a>Register</a>
+				</Link>
+				<Link href='/signin'>
+					<a>Login</a>
+				</Link>
 			</Layout>
 		</>
 	);
