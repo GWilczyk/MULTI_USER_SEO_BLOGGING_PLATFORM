@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { signup } from '../../actions/auth';
 
 const SignupComponent = () => {
 	const [values, setValues] = useState({
@@ -13,19 +14,48 @@ const SignupComponent = () => {
 
 	const { name, email, password, error, loading, message, showForm } = values;
 
-	const handleSubmit = event => {
+	const handleSubmit = async event => {
 		event.preventDefault();
-		console.table({ name, email, password, error, loading, message, showForm });
+		setValues(prevState => ({ ...prevState, loading: true, error: '' }));
+		const user = { email, name, password };
+
+		const result = await signup(user);
+
+		result.error
+			? setValues(prevState => ({
+					...prevState,
+					error: result.error,
+					loading: false,
+			  }))
+			: setValues(prevState => ({
+					...prevState,
+					name: '',
+					email: '',
+					password: '',
+					error: '',
+					loading: false,
+					message: result.message,
+					showForm: false,
+			  }));
 	};
 
 	const handleChange = field => event => {
 		event.preventDefault();
 		setValues(values => ({
 			...values,
-			error: false,
+			error: '',
 			[field]: event.target.value,
 		}));
 	};
+
+	const showError = () =>
+		error ? <div className='alert alert-danger'>{error}</div> : '';
+
+	const showLoading = () =>
+		loading ? <div className='alert alert-info'>Loading…</div> : '';
+
+	const showMessage = () =>
+		message ? <div className='alert alert-info'>{message}</div> : '';
 
 	const signupForm = () => {
 		return (
@@ -64,7 +94,14 @@ const SignupComponent = () => {
 		);
 	};
 
-	return <>{signupForm()}</>;
+	return (
+		<>
+			{showError()}
+			{showLoading()}
+			{showMessage()}
+			{showForm && signupForm()}
+		</>
+	);
 };
 
 export default SignupComponent;

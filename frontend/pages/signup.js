@@ -10,9 +10,12 @@ const Signup = () => {
 				<meta name='viewport' content='width=device-width, initial-scale=1.0' />
 			</Head>
 			<Layout>
-				<h1>Register Page</h1>
-
-				<SignupComponent />
+				<h2 className='text-center py-4'>Register</h2>
+				<div className='row'>
+					<div className='col-md-6 offset-md-3'>
+						<SignupComponent />
+					</div>
+				</div>
 			</Layout>
 		</>
 	);

@@ -54,9 +54,8 @@ export const signUp = asyncHandler(async (req, res) => {
 	const user = await User.create({ name, email, password, profile, username });
 
 	if (user) {
-		console.log('user: ', user);
 		res.status(201).json({
-			message: 'SignUp Successfull! Please signin.',
+			message: 'Signed Up Successfully! Please Sign In.',
 			// id: user._id,
 			// name: user.name,
 			// email: user.email,
