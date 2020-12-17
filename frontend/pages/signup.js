@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import Layout from '../components/Layout';
+import SignupComponent from '../components/auth/SignupComponent';
 
 const Signup = () => {
 	return (
@@ -10,9 +11,8 @@ const Signup = () => {
 			</Head>
 			<Layout>
 				<h1>Register Page</h1>
-				<Link href='/'>
-					<a>Home</a>
-				</Link>
+
+				<SignupComponent />
 			</Layout>
 		</>
 	);

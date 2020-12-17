@@ -10,9 +10,6 @@ const Index = () => {
 			</Head>
 			<Layout>
 				<h1>Home Page</h1>
-				<Link href='/signup'>
-					<a>Register</a>
-				</Link>
 				<Link href='/signin'>
 					<a>Login</a>
 				</Link>
