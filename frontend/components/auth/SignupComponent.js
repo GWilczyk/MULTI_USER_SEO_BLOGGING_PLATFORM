@@ -19,24 +19,26 @@ const SignupComponent = () => {
 		setValues(prevState => ({ ...prevState, loading: true, error: '' }));
 		const user = { email, name, password };
 
-		const result = await signup(user);
+		try {
+			const result = await signup(user);
 
-		result.error
-			? setValues(prevState => ({
-					...prevState,
-					error: result.error,
-					loading: false,
-			  }))
-			: setValues(prevState => ({
-					...prevState,
-					name: '',
-					email: '',
-					password: '',
-					error: '',
-					loading: false,
-					message: result.message,
-					showForm: false,
-			  }));
+			setValues(prevState => ({
+				...prevState,
+				name: '',
+				email: '',
+				password: '',
+				error: '',
+				loading: false,
+				message: result.message,
+				showForm: false,
+			}));
+		} catch (error) {
+			setValues(prevState => ({
+				...prevState,
+				error: error.message,
+				loading: false,
+			}));
+		}
 	};
 
 	const handleChange = field => event => {
