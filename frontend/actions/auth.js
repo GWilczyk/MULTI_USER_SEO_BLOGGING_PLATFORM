@@ -1,21 +1,28 @@
 import fetch from 'isomorphic-fetch';
 import { API } from '../config';
 
-export const signup = async user => {
-	const response = await fetch(`${API}/users/signup`, {
+export const signin = user => {
+	return fetch(`${API}/users/signin`, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify(user),
-	});
+	})
+		.then(response => response.json())
+		.catch(err => console.log(err));
+};
 
-	const data = await response.json();
-
-	if (response.status >= 400) {
-		throw new Error(data.message);
-	}
-
-	return data;
+export const signup = user => {
+	return fetch(`${API}/users/signup`, {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(user),
+	})
+		.then(response => response.json())
+		.catch(err => console.log(err));
 };

@@ -1,52 +1,52 @@
 import { useState } from 'react';
 import { signup } from '../../actions/auth';
+const INITIAL_STATE = {
+	name: '',
+	email: '',
+	password: '',
+	error: '',
+	loading: false,
+	message: '',
+	showForm: true,
+};
 
 const SignupComponent = () => {
-	const [values, setValues] = useState({
-		name: 'John',
-		email: 'john@gmail.com',
-		password: 'test1234',
-		error: '',
-		loading: false,
-		message: '',
-		showForm: true,
-	});
+	const [values, setValues] = useState(INITIAL_STATE);
 
 	const { name, email, password, error, loading, message, showForm } = values;
 
-	const handleSubmit = async event => {
+	const handleSubmit = event => {
 		event.preventDefault();
 		setValues(prevState => ({ ...prevState, loading: true, error: '' }));
+
 		const user = { email, name, password };
 
-		try {
-			const result = await signup(user);
-
-			setValues(prevState => ({
-				...prevState,
-				name: '',
-				email: '',
-				password: '',
-				error: '',
-				loading: false,
-				message: result.message,
-				showForm: false,
-			}));
-		} catch (error) {
-			setValues(prevState => ({
-				...prevState,
-				error: error.message,
-				loading: false,
-			}));
-		}
+		signup(user).then(data => {
+			if (data.error) {
+				setValues({
+					...values,
+					error: data.error,
+					loading: false,
+					showForm: true,
+				});
+			} else {
+				setValues({
+					...values,
+					...INITIAL_STATE,
+					message: data.message,
+					showForm: false,
+				});
+			}
+		});
 	};
 
-	const handleChange = field => event => {
+	const handleChange = event => {
 		event.preventDefault();
+		const { name, value } = event.target;
 		setValues(values => ({
 			...values,
 			error: '',
-			[field]: event.target.value,
+			[name]: value,
 		}));
 	};
 
@@ -64,8 +64,9 @@ const SignupComponent = () => {
 			<form onSubmit={handleSubmit}>
 				<div className='form-group'>
 					<input
-						onChange={handleChange('name')}
+						onChange={handleChange}
 						type='text'
+						name='name'
 						value={name}
 						className='form-control'
 						placeholder='Enter your name'
@@ -73,8 +74,9 @@ const SignupComponent = () => {
 				</div>
 				<div className='form-group'>
 					<input
-						onChange={handleChange('email')}
+						onChange={handleChange}
 						type='email'
+						name='email'
 						value={email}
 						className='form-control'
 						placeholder='Enter your email'
@@ -82,15 +84,16 @@ const SignupComponent = () => {
 				</div>
 				<div className='form-group'>
 					<input
-						onChange={handleChange('password')}
+						onChange={handleChange}
 						type='password'
+						name='password'
 						value={password}
 						className='form-control'
 						placeholder='Enter your password'
 					/>
 				</div>
 				<div>
-					<button className='btn btn-primary'>Sign Up</button>
+					<button className='btn btn-primary'>Signup</button>
 				</div>
 			</form>
 		);
