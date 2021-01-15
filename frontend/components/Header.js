@@ -34,28 +34,28 @@ const Header = () => {
 				</Link>
 				<NavbarToggler onClick={toggle} />
 				<Collapse isOpen={isOpen} navbar>
-					<Nav className='ml-auto' navbar>
-						{isAuth() ? (
+					{isAuth() ? (
+						<Nav className='ml-auto' navbar>
 							<NavItem>
 								<NavLink onClick={handleSignOut} style={{ cursor: 'pointer' }}>
 									Logout
 								</NavLink>
 							</NavItem>
-						) : (
-							<>
-								<NavItem>
-									<Link href='/signin'>
-										<NavLink style={{ cursor: 'pointer' }}>Login</NavLink>
-									</Link>
-								</NavItem>
-								<NavItem>
-									<Link href='/signup'>
-										<NavLink style={{ cursor: 'pointer' }}>Register</NavLink>
-									</Link>
-								</NavItem>
-							</>
-						)}
-					</Nav>
+						</Nav>
+					) : (
+						<Nav className='ml-auto' navbar>
+							<NavItem>
+								<Link href='/signin'>
+									<NavLink style={{ cursor: 'pointer' }}>Login</NavLink>
+								</Link>
+							</NavItem>
+							<NavItem>
+								<Link href='/signup'>
+									<NavLink style={{ cursor: 'pointer' }}>Register</NavLink>
+								</Link>
+							</NavItem>
+						</Nav>
+					)}
 				</Collapse>
 			</Navbar>
 		</div>

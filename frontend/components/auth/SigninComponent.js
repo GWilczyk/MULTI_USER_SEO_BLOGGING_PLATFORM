@@ -1,6 +1,6 @@
 import Router from 'next/router';
-import { useState } from 'react';
-import { authenticate, signin } from '../../actions/auth';
+import { useEffect, useState } from 'react';
+import { authenticate, isAuth, signin } from '../../actions/auth';
 const INITIAL_STATE = {
 	email: '',
 	password: '',
@@ -14,6 +14,10 @@ const SigninComponent = () => {
 	const [values, setValues] = useState(INITIAL_STATE);
 
 	const { email, password, error, loading, message, showForm } = values;
+
+	useEffect(() => {
+		isAuth() && Router.push('/');
+	}, []);
 
 	const handleSubmit = event => {
 		event.preventDefault();
