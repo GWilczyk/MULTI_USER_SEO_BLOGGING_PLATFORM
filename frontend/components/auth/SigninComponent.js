@@ -1,6 +1,6 @@
 import Router from 'next/router';
 import { useState } from 'react';
-import { signin } from '../../actions/auth';
+import { authenticate, signin } from '../../actions/auth';
 const INITIAL_STATE = {
 	email: '',
 	password: '',
@@ -29,10 +29,9 @@ const SigninComponent = () => {
 					showForm: true,
 				});
 			} else {
-				// Save user token to cookie
-				// Save user info to localStorage
+				// Save user token to cookie & user info to localStorage
 				// Authenticate user
-				Router.push(`/`);
+				authenticate(data, () => Router.push(`/`));
 			}
 		});
 	};
