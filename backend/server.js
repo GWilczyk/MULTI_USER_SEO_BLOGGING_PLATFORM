@@ -10,7 +10,7 @@ import { notFound, errorHandler } from './middlewares/errorMiddlewares.js';
 dotenv.config();
 
 import blogRoutes from './routes/blogRoutes.js';
-import userRoutes from './routes/userRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 
 connectDB();
 
@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/v1', blogRoutes);
-app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/users', authRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
