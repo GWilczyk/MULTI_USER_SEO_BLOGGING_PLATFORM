@@ -16,6 +16,16 @@ export const signin = user => {
 		.catch(err => console.log(err));
 };
 
+export const signout = next => {
+	removeCookie('token');
+	removeLocalStorage('user');
+	next();
+
+	return fetch(`${API}/users/signout`, { method: 'GET' })
+		.then(response => console.log('signout success', response))
+		.catch(err => console.log(err));
+};
+
 export const signup = user => {
 	return fetch(`${API}/users/signup`, {
 		method: 'POST',
@@ -32,19 +42,19 @@ export const signup = user => {
 // COOKIES
 export const getCookie = key => {
 	if (process.browser) {
-		Cookies.get(key);
+		return Cookies.get(key);
 	}
 };
 
 export const removeCookie = key => {
 	if (process.browser) {
-		Cookies.remove(key, { expires: 1 });
+		return Cookies.remove(key, { expires: 1 });
 	}
 };
 
 export const setCookie = (key, value) => {
 	if (process.browser) {
-		Cookies.set(key, value, { expires: 1 });
+		return Cookies.set(key, value, { expires: 1 });
 	}
 };
 
@@ -65,7 +75,6 @@ export const removeLocalStorage = key => {
 export const authenticate = (data, next) => {
 	setCookie('token', data.token);
 	const { _id, username, name, email, role } = data;
-	// const user = { _id, username, name, email, role };
 	setLocalStorage('user', { _id, username, name, email, role });
 	next();
 };

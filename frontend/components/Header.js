@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import Router from 'next/router';
 import Link from 'next/link';
-import { APP_NAME } from '../config';
 import {
 	Collapse,
 	Navbar,
@@ -16,30 +16,45 @@ import {
 	NavbarText,
 } from 'reactstrap';
 
+import { APP_NAME } from '../config';
+import { isAuth, signout } from '../actions/auth';
+
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false);
-
 	const toggle = () => setIsOpen(prevState => !prevState);
+	const handleSignOut = () => signout(() => Router.replace('/signin'));
 
 	return (
 		<div>
 			<Navbar color='light' light expand='md'>
 				<Link href='/'>
-					<NavLink className='font-weight-bold'>{APP_NAME}</NavLink>
+					<NavLink className='font-weight-bold' style={{ cursor: 'pointer' }}>
+						{APP_NAME}
+					</NavLink>
 				</Link>
 				<NavbarToggler onClick={toggle} />
 				<Collapse isOpen={isOpen} navbar>
 					<Nav className='ml-auto' navbar>
-						<NavItem>
-							<Link href='/signin'>
-								<NavLink>Login</NavLink>
-							</Link>
-						</NavItem>
-						<NavItem>
-							<Link href='/signup'>
-								<NavLink>Register</NavLink>
-							</Link>
-						</NavItem>
+						{isAuth() ? (
+							<NavItem>
+								<NavLink onClick={handleSignOut} style={{ cursor: 'pointer' }}>
+									Logout
+								</NavLink>
+							</NavItem>
+						) : (
+							<>
+								<NavItem>
+									<Link href='/signin'>
+										<NavLink style={{ cursor: 'pointer' }}>Login</NavLink>
+									</Link>
+								</NavItem>
+								<NavItem>
+									<Link href='/signup'>
+										<NavLink style={{ cursor: 'pointer' }}>Register</NavLink>
+									</Link>
+								</NavItem>
+							</>
+						)}
 					</Nav>
 				</Collapse>
 			</Navbar>
