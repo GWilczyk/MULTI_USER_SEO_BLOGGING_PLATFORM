@@ -1,17 +1,40 @@
 import asyncHandler from 'express-async-handler';
 import expressJwt from 'express-jwt';
 import generateToken from '../utils/generateToken.js';
-import User from '../models/usersModel.js';
+import User from '../models/userModel.js';
 import shortId from 'shortid';
 
 // Needed to get process.env.JWT_SECRET in requireSignedIn
 import dotenv from 'dotenv';
 dotenv.config();
 
+export const authMiddleware = (req, res, next) => {
+	User.findById({ _id: req.user.id }).exec((err, user) => {
+		if (err || !user) {
+			return res.status(400).json({ error: 'User not found' });
+		}
+		req.profile = user;
+		next();
+	});
+};
+
+export const adminMiddleware = (req, res, next) => {
+	User.findById({ _id: req.user.id }).exec((err, user) => {
+		if (err || !user) {
+			return res.status(400).json({ error: 'User not found.' });
+		}
+		console.log('adminMiddleware: ', user.role);
+		if (user.role !== 1) {
+			return res.status(400).json({ error: 'Admin resources. Access denied.' });
+		}
+		req.profile = user;
+		next();
+	});
+};
+
 export const requireSignedIn = expressJwt({
 	secret: process.env.JWT_SECRET,
 	algorithms: ['HS256'],
-	userProperty: 'auth',
 });
 
 export const signIn = asyncHandler(async (req, res) => {
@@ -27,7 +50,7 @@ export const signIn = asyncHandler(async (req, res) => {
 			expiresIn: `${process.env.JWT_SECRET_EXPIRESIN}`,
 		});
 
-		return res.json({ token, _id, username, name, email, role });
+		res.json({ token, user: { _id, email, name, role, username } });
 	} else {
 		res.status(401);
 		throw new Error('Invalid Email or Password');

@@ -1,5 +1,7 @@
 import express from 'express';
 import {
+	authMiddleware,
+	adminMiddleware,
 	requireSignedIn,
 	signIn,
 	signOut,
@@ -17,11 +19,9 @@ router.post('/signin', userSignInValidator, runValidation, signIn);
 router.post('/signup', userSignUpValidator, runValidation, signUp);
 router.get('/signout', signOut);
 
-router.get('/secret', requireSignedIn, (req, res) => {
-	console.log('SECRET: ', process.env.JWT_SECRET);
-	res.json({
-		message: 'you have access to secret page!',
-	});
+// For Testing
+router.get('/secret', requireSignedIn, adminMiddleware, (req, res) => {
+	res.json({ user: req.user });
 });
 
 export default router;
