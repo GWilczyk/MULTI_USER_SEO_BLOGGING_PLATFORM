@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
 import {
 	Collapse,
@@ -21,6 +21,7 @@ import { isAuth, signout } from '../actions/auth';
 
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false);
+	const router = useRouter();
 	const toggle = () => setIsOpen(prevState => !prevState);
 	const handleSignOut = () => signout(() => Router.push('/signin'));
 
@@ -34,28 +35,46 @@ const Header = () => {
 				</Link>
 				<NavbarToggler onClick={toggle} />
 				<Collapse isOpen={isOpen} navbar>
-					{isAuth() ? (
-						<Nav className='ml-auto' navbar>
+					<Nav className='ml-auto' navbar>
+						{!isAuth() && (
+							<>
+								<NavItem>
+									<Link href='/signin'>
+										<NavLink style={{ cursor: 'pointer' }}>Login</NavLink>
+									</Link>
+								</NavItem>
+								<NavItem>
+									<Link href='/signup'>
+										<NavLink style={{ cursor: 'pointer' }}>Register</NavLink>
+									</Link>
+								</NavItem>
+							</>
+						)}
+
+						{isAuth() && isAuth().role === 0 && (
+							<NavItem>
+								<Link href='/UserDashboard'>
+									<NavLink>{`${isAuth().name}'s Dashboard`}</NavLink>
+								</Link>
+							</NavItem>
+						)}
+
+						{isAuth() && isAuth().role === 1 && (
+							<NavItem>
+								<Link href='/AdminDashboard'>
+									<NavLink>{`${isAuth().name}'s Dashboard`}</NavLink>
+								</Link>
+							</NavItem>
+						)}
+
+						{isAuth() && (
 							<NavItem>
 								<NavLink onClick={handleSignOut} style={{ cursor: 'pointer' }}>
 									Logout
 								</NavLink>
 							</NavItem>
-						</Nav>
-					) : (
-						<Nav className='ml-auto' navbar>
-							<NavItem>
-								<Link href='/signin'>
-									<NavLink style={{ cursor: 'pointer' }}>Login</NavLink>
-								</Link>
-							</NavItem>
-							<NavItem>
-								<Link href='/signup'>
-									<NavLink style={{ cursor: 'pointer' }}>Register</NavLink>
-								</Link>
-							</NavItem>
-						</Nav>
-					)}
+						)}
+					</Nav>
 				</Collapse>
 			</Navbar>
 		</div>
