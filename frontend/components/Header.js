@@ -22,7 +22,7 @@ import { isAuth, signout } from '../actions/auth';
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const toggle = () => setIsOpen(prevState => !prevState);
-	const handleSignOut = () => signout(() => Router.replace('/signin'));
+	const handleSignOut = () => signout(() => Router.push('/signin'));
 
 	return (
 		<div>

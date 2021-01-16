@@ -1,22 +1,29 @@
 import Router from 'next/router';
 import { useEffect, useState } from 'react';
 import { authenticate, isAuth, signin } from '../../actions/auth';
+
 const INITIAL_STATE = {
 	email: '',
-	password: '',
 	error: '',
 	loading: false,
 	message: '',
+	password: '',
 	showForm: true,
 };
 
 const SigninComponent = () => {
 	const [values, setValues] = useState(INITIAL_STATE);
 
-	const { email, password, error, loading, message, showForm } = values;
+	const { email, error, loading, message, password, showForm } = values;
 
 	useEffect(() => {
-		isAuth() && Router.push('/');
+		if (isAuth() && isAuth().role === 1) {
+			Router.push('/AdminDashboard');
+		} else if (isAuth() && isAuth().role !== 1) {
+			Router.push('/UserDashboard');
+		} else {
+			Router.push('/signin');
+		}
 	}, []);
 
 	const handleSubmit = event => {
@@ -35,7 +42,13 @@ const SigninComponent = () => {
 			} else {
 				// Save user token to cookie & user info to localStorage
 				// Authenticate user
-				authenticate(data, () => Router.push(`/`));
+				authenticate(data, () => {
+					if (isAuth() && isAuth().role === 1) {
+						Router.push('/AdminDashboard');
+					} else {
+						Router.push('/UserDashboard');
+					}
+				});
 			}
 		});
 	};

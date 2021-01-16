@@ -18,7 +18,13 @@ const SignupComponent = () => {
 	const { name, email, password, error, loading, message, showForm } = values;
 
 	useEffect(() => {
-		isAuth() && Router.push('/');
+		if (isAuth() && isAuth().role === 1) {
+			Router.push('/AdminDashboard');
+		} else if (isAuth() && isAuth().role !== 1) {
+			Router.push('/UserDashboard');
+		} else {
+			Router.push('/signin');
+		}
 	}, []);
 
 	const handleSubmit = event => {
