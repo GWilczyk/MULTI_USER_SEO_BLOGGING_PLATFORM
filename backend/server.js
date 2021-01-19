@@ -12,6 +12,7 @@ dotenv.config();
 import authRoutes from './routes/authRoutes.js';
 import blogRoutes from './routes/blogRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
+import tagRoutes from './routes/tagRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 
 connectDB();
@@ -28,6 +29,7 @@ app.use(cookieParser());
 
 app.use('/api/v1', blogRoutes);
 app.use('/api/v1/category', categoryRoutes);
+app.use('/api/v1/tag', tagRoutes);
 app.use('/api/v1/users', authRoutes);
 app.use('/api/v1/users', userRoutes);
 

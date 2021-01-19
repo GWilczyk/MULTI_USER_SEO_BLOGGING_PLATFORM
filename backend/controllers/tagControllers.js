@@ -1,14 +1,14 @@
-import Category from '../models/categoryModel.js';
+import Tag from '../models/tagModel.js';
 import slugify from 'slugify';
 import dbErrorHandler from '../middlewares/dbErrorHandler.js';
 
-export const createCategory = (req, res) => {
+export const createTag = (req, res) => {
 	const { name } = req.body;
 	let slugName = slugify(name, { lower: true });
 
-	let category = new Category({ name, slug: slugName });
+	let tag = new Tag({ name, slug: slugName });
 
-	category.save((err, data) => {
+	tag.save((err, data) => {
 		if (err) {
 			return res.status(400).json({ error: dbErrorHandler(err) });
 		}
@@ -17,34 +17,34 @@ export const createCategory = (req, res) => {
 	});
 };
 
-export const deleteCategory = (req, res) => {
+export const deleteTag = (req, res) => {
 	const slug = req.params.slug.toLowerCase();
-	Category.findOneAndRemove({ slug }).exec((err, data) => {
+	Tag.findOneAndRemove({ slug }).exec((err, data) => {
 		if (err) {
 			return res.status(400).json({ error: dbErrorHandler(err) });
 		}
 
-		res.json({ message: 'Category deleted successfully.' });
+		res.json({ message: 'Tag deleted successfully.' });
 	});
 };
 
-export const listCategories = (req, res) => {
-	Category.find({}).exec((err, data) => {
+export const listTags = (req, res) => {
+	Tag.find({}).exec((err, tags) => {
 		if (err) {
 			return res.status(400).json({ error: dbErrorHandler(err) });
 		}
 
-		res.json(data);
+		res.json(tags);
 	});
 };
 
-export const readCategory = (req, res) => {
+export const readTag = (req, res) => {
 	const slug = req.params.slug.toLowerCase();
-	Category.findOne({ slug }).exec((err, category) => {
+	Tag.findOne({ slug }).exec((err, tag) => {
 		if (err) {
 			return res.status(400).json({ error: dbErrorHandler(err) });
 		}
 
-		res.json(category);
+		res.json(tag);
 	});
 };

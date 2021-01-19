@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const categorySchema = mongoose.Schema(
+const tagSchema = mongoose.Schema(
 	{
 		name: {
 			type: String,
@@ -19,6 +19,6 @@ const categorySchema = mongoose.Schema(
 	}
 );
 
-const Category = mongoose.model('Category', categorySchema);
+const Tag = mongoose.model('Tag', tagSchema);
 
-export default Category;
+export default Tag;
