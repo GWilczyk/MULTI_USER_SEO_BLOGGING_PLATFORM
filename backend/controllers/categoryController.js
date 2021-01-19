@@ -1,5 +1,6 @@
 import Category from '../models/categoryModel.js';
 import slugify from 'slugify';
+import dbErrorHandler from '../middlewares/dbErrorHandler.js';
 
 export const create = (req, res) => {
 	const { name } = req.body;
@@ -9,7 +10,7 @@ export const create = (req, res) => {
 
 	category.save((err, data) => {
 		if (err) {
-			return res.status(400).json({ error: err });
+			return res.status(400).json({ error: dbErrorHandler(err) });
 		}
 
 		res.json(data);
