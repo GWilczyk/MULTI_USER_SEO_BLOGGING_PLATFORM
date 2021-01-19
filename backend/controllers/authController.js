@@ -23,7 +23,10 @@ export const adminMiddleware = (req, res, next) => {
 		if (err || !user) {
 			return res.status(400).json({ error: 'User not found.' });
 		}
-		console.log('adminMiddleware: ', user.role);
+		console.log(
+			'adminMiddleware:',
+			user.role === 1 ? 'Admin User' : 'Regular User'
+		);
 		if (user.role !== 1) {
 			return res.status(400).json({ error: 'Admin resources. Access denied.' });
 		}
