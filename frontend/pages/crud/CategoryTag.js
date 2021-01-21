@@ -1,4 +1,5 @@
 import Admin from '../../components/auth/Admin';
+import Category from '../../components/crud/Category';
 import Layout from '../../components/Layout';
 
 const CategoryTag = () => {
@@ -12,6 +13,7 @@ const CategoryTag = () => {
 						</div>
 						<div className='col-md-6 py-5' style={{ backgroundColor: 'red' }}>
 							<p>Categories</p>
+							<Category />
 						</div>
 						<div className='col-md-6 py-5' style={{ backgroundColor: 'blue' }}>
 							<p>Tag</p>

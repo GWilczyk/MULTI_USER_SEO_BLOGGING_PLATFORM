@@ -3,5 +3,5 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/AdminDashboard": "pages/AdminDashboard.js",
-  "/crud/category-tag": "pages/crud/category-tag.js"
+  "/crud/CategoryTag": "pages/crud/CategoryTag.js"
 }
