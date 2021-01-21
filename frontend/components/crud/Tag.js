@@ -1,33 +1,33 @@
 import { useEffect, useState } from 'react';
 import { getCookie } from '../../actions/auth';
 import {
-	createCategory,
-	deleteCategory,
-	getCategories,
-	getCategory,
-} from '../../actions/categoryActions';
+	createTag,
+	deleteTag,
+	getTags,
+	getTag,
+} from '../../actions/tagActions';
 
-const Category = () => {
+const Tag = () => {
 	const [values, setValues] = useState({
-		categories: [],
 		deleted: false,
 		error: false,
 		name: '',
 		reload: false,
 		success: false,
+		tags: [],
 	});
 
-	const { categories, deleted, error, name, reload, success } = values;
+	const { deleted, error, name, reload, success, tags } = values;
 	const token = getCookie('token');
 
 	useEffect(() => {
-		getCategories().then(data => {
+		getTags().then(data => {
 			if (data.error) {
 				console.log(data.error);
 			} else {
 				setValues(values => ({
 					...values,
-					categories: data,
+					tags: data,
 					reload: false,
 				}));
 			}
@@ -45,12 +45,10 @@ const Category = () => {
 	};
 
 	const handleDelete = slug => {
-		let answer = window.confirm(
-			'Are you sure you want to delete this category?'
-		);
+		let answer = window.confirm('Are you sure you want to delete this tag?');
 
 		answer &&
-			deleteCategory(slug, token).then(data => {
+			deleteTag(slug, token).then(data => {
 				if (data.error) {
 					console.log(data.error);
 				} else {
@@ -73,7 +71,7 @@ const Category = () => {
 
 	const handleSubmit = event => {
 		event.preventDefault();
-		createCategory({ name }, token).then(data => {
+		createTag({ name }, token).then(data => {
 			if (data.error) {
 				setValues(values => ({ ...values, error: data.error, success: false }));
 			} else {
@@ -88,28 +86,28 @@ const Category = () => {
 		});
 	};
 
-	const showCategories = () =>
-		categories.map((category, index) => (
+	const showTags = () =>
+		tags.map((tag, index) => (
 			<button
 				className='btn btn-outline-primary mx-1 mt-3'
 				key={index}
-				onClick={() => handleDelete(category.slug)}
+				onClick={() => handleDelete(tag.slug)}
 				title='Click to delete'
 			>
-				{category.name}
+				{tag.name}
 			</button>
 		));
 
 	const showDeleted = () =>
-		deleted && <p className='text-success'>Category successfully deleted!</p>;
+		deleted && <p className='text-success'>Tag successfully deleted!</p>;
 
 	const showError = () =>
-		error && <p className='text-danger'>Category already exists!</p>;
+		error && <p className='text-danger'>Tag already exists!</p>;
 
 	const showSuccess = () =>
-		success && <p className='text-success'>Category successfully created!</p>;
+		success && <p className='text-success'>Tag successfully created!</p>;
 
-	const newCategoryForm = () => (
+	const newTagForm = () => (
 		<form onSubmit={handleSubmit}>
 			<div className='form-group'>
 				<label className='text-muted'>Name</label>
@@ -134,11 +132,11 @@ const Category = () => {
 			{showError()}
 			{showSuccess()}
 			<div onMouseMove={handleMouseMove}>
-				{newCategoryForm()}
-				{showCategories()}
+				{newTagForm()}
+				{showTags()}
 			</div>
 		</p>
 	);
 };
 
-export default Category;
+export default Tag;

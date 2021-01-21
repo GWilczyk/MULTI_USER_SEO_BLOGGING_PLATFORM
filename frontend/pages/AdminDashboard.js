@@ -8,7 +8,7 @@ const AdminDashboard = () => {
 			<Admin>
 				<div className='container-fluid'>
 					<div className='row'>
-						<div className='col-md-12'>
+						<div className='col-md-12 py-3'>
 							<h2>Admin Dashboard</h2>
 						</div>
 
@@ -16,6 +16,10 @@ const AdminDashboard = () => {
 							<ul className='list-group'>
 								<li className='list-group-item'>
 									<Link href='/crud/CategoryTag'>Create Category</Link>
+								</li>
+
+								<li className='list-group-item'>
+									<Link href='/crud/CategoryTag'>Create Tag</Link>
 								</li>
 							</ul>
 						</div>
