@@ -3,7 +3,7 @@ import Category from '../../components/crud/Category';
 import Layout from '../../components/Layout';
 import Tag from '../../components/crud/Tag';
 
-const CategoryTag = () => {
+const CategoryTagCRUD = () => {
 	return (
 		<Layout>
 			<Admin>
@@ -27,4 +27,4 @@ const CategoryTag = () => {
 	);
 };
 
-export default CategoryTag;
+export default CategoryTagCRUD;

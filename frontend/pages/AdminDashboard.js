@@ -12,24 +12,23 @@ const AdminDashboard = () => {
 							<h2>Admin Dashboard</h2>
 						</div>
 
-						<div className='col-md-4 py-5' style={{ backgroundColor: 'red' }}>
+						<div className='col-md-4 py-5'>
 							<ul className='list-group'>
 								<li className='list-group-item'>
-									<Link href='/crud/CategoryTag'>Create Category</Link>
+									<Link href='/crud/CategoryTagCRUD'>Create Category</Link>
 								</li>
 
 								<li className='list-group-item'>
-									<Link href='/crud/CategoryTag'>Create Tag</Link>
+									<Link href='/crud/CategoryTagCRUD'>Create Tag</Link>
+								</li>
+
+								<li className='list-group-item'>
+									<Link href='/crud/BlogCRUD'>Create Blog</Link>
 								</li>
 							</ul>
 						</div>
 
-						<div
-							className='col-md-8 py-5'
-							style={{ backgroundColor: 'blue', color: '#fff' }}
-						>
-							right
-						</div>
+						<div className='col-md-8 py-5'>right</div>
 					</div>
 				</div>
 			</Admin>

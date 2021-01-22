@@ -42,6 +42,7 @@ export const createBlog = (req, res) => {
 		let tagsArray = tags && tags.split(',');
 
 		let blog = new Blog();
+
 		blog.body = body;
 		blog.excerpt = smartTrim(body, 320, ' ', ' …');
 		blog.mdesc = stripHtml(body.substring(0, 160)).result;
