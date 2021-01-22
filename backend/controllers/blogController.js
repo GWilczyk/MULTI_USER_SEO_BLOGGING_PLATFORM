@@ -8,6 +8,7 @@ import Blog from '../models/blogModel.js';
 import Category from '../models/categoryModel.js';
 import Tag from '../models/tagModel.js';
 import dbErrorHandler from '../middlewares/dbErrorHandler.js';
+import { smartTrim } from '../middlewares/blogHelpers.js';
 
 export const createBlog = (req, res) => {
 	let form = new formidable.IncomingForm();
@@ -42,13 +43,11 @@ export const createBlog = (req, res) => {
 
 		let blog = new Blog();
 		blog.body = body;
-		// blog.categories = categories;
-		// blog.excerpt = ;
+		blog.excerpt = smartTrim(body, 320, ' ', ' …');
 		blog.mdesc = stripHtml(body.substring(0, 160)).result;
 		blog.mtitle = `${title} | ${process.env.APP_NAME}`;
 		blog.postedBy = req.user._id;
 		blog.slug = slugify(title, { lower: true });
-		// blog.tags = tags;
 		blog.title = title;
 
 		if (files.photo) {
