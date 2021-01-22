@@ -129,7 +129,7 @@ const Category = () => {
 	);
 
 	return (
-		<p>
+		<>
 			{showDeleted()}
 			{showError()}
 			{showSuccess()}
@@ -137,7 +137,7 @@ const Category = () => {
 				{newCategoryForm()}
 				{showCategories()}
 			</div>
-		</p>
+		</>
 	);
 };
 

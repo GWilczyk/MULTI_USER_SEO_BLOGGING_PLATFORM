@@ -127,7 +127,7 @@ const Tag = () => {
 	);
 
 	return (
-		<p>
+		<>
 			{showDeleted()}
 			{showError()}
 			{showSuccess()}
@@ -135,7 +135,7 @@ const Tag = () => {
 				{newTagForm()}
 				{showTags()}
 			</div>
-		</p>
+		</>
 	);
 };
 

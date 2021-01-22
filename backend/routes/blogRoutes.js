@@ -1,7 +1,22 @@
 import express from 'express';
 const router = express.Router();
-import { time } from '../controllers/blogController.js';
+import {
+	createBlog,
+	deleteBlog,
+	listBlogs,
+	readBlog,
+} from '../controllers/blogController.js';
+import {
+	adminMiddleware,
+	requireSignedIn,
+} from '../controllers/authController.js';
 
-router.route('/').get(time);
+router.post('/', requireSignedIn, adminMiddleware, createBlog);
+
+router.delete('/:slug', requireSignedIn, adminMiddleware, deleteBlog);
+
+router.get('/listAllBlogs', listBlogs);
+
+router.get('/:slug', readBlog);
 
 export default router;

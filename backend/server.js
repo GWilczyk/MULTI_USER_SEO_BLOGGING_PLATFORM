@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/api/v1', blogRoutes);
+app.use('/api/v1/blog', blogRoutes);
 app.use('/api/v1/category', categoryRoutes);
 app.use('/api/v1/tag', tagRoutes);
 app.use('/api/v1/users', authRoutes);
