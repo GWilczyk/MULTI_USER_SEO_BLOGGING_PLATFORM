@@ -18,7 +18,19 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import '../../node_modules/react-quill/dist/quill.snow.css';
 
 const BlogCreate = ({ router }) => {
-	const [body, setBody] = useState({});
+	const blogFromLocalStorage = () => {
+		if (typeof window === 'undefined') {
+			return {};
+		}
+
+		if (localStorage.getItem('blog')) {
+			return JSON.parse(localStorage.getItem('blog'));
+		} else {
+			return {};
+		}
+	};
+
+	const [body, setBody] = useState(blogFromLocalStorage());
 	const [values, setValues] = useState({
 		error: false,
 		formData: '',
@@ -37,6 +49,10 @@ const BlogCreate = ({ router }) => {
 		title,
 	} = values;
 
+	useEffect(() => {
+		setValues(state => ({ ...state, formData: new FormData() }));
+	}, [router]);
+
 	const createBlogForm = () => {
 		return (
 			<form onSubmit={publishBlog}>
@@ -53,9 +69,11 @@ const BlogCreate = ({ router }) => {
 
 				<div className='form-group'>
 					<ReactQuill
-						value={body}
+						formats={BlogCreate.formats}
+						modules={BlogCreate.modules}
+						onChange={handleReactQuill}
 						placeholder='Write something amazing…'
-						onChange={handleQuill}
+						value={body}
 					/>
 				</div>
 
@@ -68,123 +86,68 @@ const BlogCreate = ({ router }) => {
 		);
 	};
 
-	const handleChange = ({ target: { name, value } }) => {
-		console.log('name: ', name, ' , value: ', value);
+	const handleChange = ({ target: { files, name, value } }) => {
+		const receivedData = name === 'photo' ? files[0] : value;
+		formData.set(name, receivedData);
+		setValues(state => ({
+			...state,
+			[name]: receivedData,
+			formData,
+			error: '',
+		}));
 	};
 
-	const handleQuill = event => console.log('React Quill: ', event);
+	const handleReactQuill = event => {
+		setBody(event);
+		formData.set('body', event);
+		if (typeof window !== 'undefined') {
+			localStorage.setItem('blog', JSON.stringify(event));
+		}
+	};
 
 	const publishBlog = event => {
 		event.preventDefault();
 		console.log('ready to publishBlog');
 	};
 
-	// const token = getCookie('token');
-
-	// useEffect(() => {
-	// 	getBlogs().then(data => {
-	// 		if (data.error) {
-	// 			console.log(data.error);
-	// 		} else {
-	// 			setValues(values => ({
-	// 				...values,
-	// 				blogs: data,
-	// 				reload: false,
-	// 			}));
-	// 		}
-	// 	});
-	// }, [reload]);
-
-	// const handleDelete = slug => {
-	// 	let answer = window.confirm(
-	// 		'Are you sure you want to delete this category?'
-	// 	);
-
-	// 	answer &&
-	// 		deleteBlog(slug, token).then(data => {
-	// 			if (data.error) {
-	// 				console.log(data.error);
-	// 			} else {
-	// 			}
-	// 			setValues(values => ({
-	// 				...values,
-	// 				deleted: true,
-	// 				reload: true,
-	// 			}));
-	// 		});
-	// };
-
-	// const handleMouseMove = () =>
-	// 	setValues(values => ({
-	// 		...values,
-	// 		deleted: false,
-	// 		error: false,
-	// 		success: false,
-	// 	}));
-
-	// const handleSubmit = event => {
-	// 	event.preventDefault();
-	// 	createBlog({ name }, token).then(data => {
-	// 		if (data.error) {
-	// 			setValues(values => ({ ...values, error: data.error, success: false }));
-	// 		} else {
-	// 			setValues(values => ({
-	// 				...values,
-	// 				error: false,
-	// 				name: '',
-	// 				reload: true,
-	// 				success: true,
-	// 			}));
-	// 		}
-	// 	});
-	// };
-
-	// const showBlogs = () =>
-	// 	blogs.map((blog, index) => (
-	// 		<button
-	// 			className='btn btn-outline-primary mx-1 mt-3'
-	// 			key={index}
-	// 			onClick={() => handleDelete(blog.slug)}
-	// 			title='Click to delete'
-	// 		>
-	// 			{blog.title}
-	// 		</button>
-	// 	));
-
-	// const showDeleted = () =>
-	// 	deleted && <p className='text-success'>Blog successfully deleted!</p>;
-
-	// const showError = () =>
-	// 	error && <p className='text-danger'>Blog already exists!</p>;
-
-	// const showSuccess = () =>
-	// 	success && <p className='text-success'>Blog successfully created!</p>;
-
-	// const newBlogForm = () => (
-	// 	<form onSubmit={handleSubmit}>
-	// 		<div className='form-group'>
-	// 			<label className='text-muted'>Name</label>
-
-	// 			<input
-	// 				type='text'
-	// 				className='form-control'
-	// 				onChange={handleChange}
-	// 				value={name}
-	// 				required
-	// 			/>
-	// 		</div>
-	// 		<button type='submit' className='btn btn-primary'>
-	// 			Create
-	// 		</button>
-	// 	</form>
-	// );
-
 	return (
 		<>
 			{createBlogForm()}
-			{JSON.stringify(router)}
+			<hr />
+			{JSON.stringify(title)}
+			<hr />
+			{JSON.stringify(body)}
 		</>
 	);
 };
+
+BlogCreate.modules = {
+	toolbar: [
+		[{ header: '1' }, { header: '2' }, { header: [3, 4, 5, 6] }, { font: [] }],
+		[{ size: [] }],
+		['bold', 'italic', 'underline', 'strike', 'blockquote'],
+		[{ list: 'ordered' }, { list: 'bullet' }],
+		['link', 'image', 'video'],
+		['clean'],
+		['code-block'],
+	],
+};
+
+BlogCreate.formats = [
+	'blockquote',
+	'bold',
+	'bullet',
+	'code-block',
+	'font',
+	'header',
+	'image',
+	'italic',
+	'link',
+	'list',
+	'size',
+	'strike',
+	'underline',
+	'video',
+];
 
 export default withRouter(BlogCreate);
