@@ -6,10 +6,10 @@ export const createBlog = (blog, token) => {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
-			'Content-Type': 'application/json',
+			'Content-Type': 'multipart/form-data',
 			Authorization: `Bearer ${token}`,
 		},
-		body: JSON.stringify(blog),
+		body: blog,
 	})
 		.then(response => response.json())
 		.catch(err => console.log(err));

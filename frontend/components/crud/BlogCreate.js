@@ -1,13 +1,23 @@
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import Router, { withRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { getCookie } from '../../actions/auth';
+
 import {
 	createBlog,
 	deleteBlog,
-	getBlogs,
 	getBlog,
+	getBlogs,
 } from '../../actions/blogActions';
+import { getCategories } from '../../actions/categoryActions';
+import { getCookie } from '../../actions/auth';
+import { getTags } from '../../actions/tagActions';
 
-const BlogCreate = () => {
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+
+import '../../node_modules/react-quill/dist/quill.snow.css';
+
+const BlogCreate = ({ router }) => {
 	const [values, setValues] = useState({
 		blogs: [],
 		deleted: false,
@@ -128,7 +138,12 @@ const BlogCreate = () => {
 		</form>
 	);
 
-	return <h2>Create Blog Form</h2>;
+	return (
+		<>
+			<h2>Create Blog Form</h2>
+			{JSON.stringify(router)}
+		</>
+	);
 };
 
-export default BlogCreate;
+export default withRouter(BlogCreate);
