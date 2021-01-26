@@ -32,6 +32,8 @@ const BlogCreate = ({ router }) => {
 
 	const [body, setBody] = useState(blogFromLocalStorage());
 	const [categories, setCategories] = useState([]);
+	const [checkedCategories, setCheckedCategories] = useState([]);
+	const [checkedTags, setCheckedTags] = useState([]);
 	const [tags, setTags] = useState([]);
 	const [values, setValues] = useState({
 		error: false,
@@ -109,6 +111,25 @@ const BlogCreate = ({ router }) => {
 		}
 	};
 
+	const handleToggle = ({ target: { id, name } }) => {
+		setValues(prevState => ({ ...prevState, error: '' }));
+
+		const all =
+			name === 'Categories' ? [...checkedCategories] : [...checkedTags];
+
+		const clickedItem = all.indexOf(id);
+
+		clickedItem === -1 ? all.push(id) : all.splice(clickedItem, 1);
+
+		if (name === 'Categories') {
+			setCheckedCategories(all);
+			formData.set('categories', all);
+		} else {
+			setCheckedTags(all);
+			formData.set('tags', all);
+		}
+	};
+
 	const initCategories = () => {
 		getCategories().then(data => {
 			if (data.error) {
@@ -139,7 +160,13 @@ const BlogCreate = ({ router }) => {
 			categories &&
 			categories.map((category, index) => (
 				<li className='list-unstyled' key={index}>
-					<input type='checkbox' className='mr-2' />
+					<input
+						className='mr-2'
+						id={category._id}
+						name='Categories'
+						onChange={handleToggle}
+						type='checkbox'
+					/>
 					<label className='form-check-label'>{category.name}</label>
 				</li>
 			))
@@ -151,7 +178,13 @@ const BlogCreate = ({ router }) => {
 			tags &&
 			tags.map((tag, index) => (
 				<li className='list-unstyled' key={index}>
-					<input type='checkbox' className='mr-2' />
+					<input
+						className='mr-2'
+						id={tag._id}
+						name='Tags'
+						onChange={handleToggle}
+						type='checkbox'
+					/>
 					<label className='form-check-label'>{tag.name}</label>
 				</li>
 			))
