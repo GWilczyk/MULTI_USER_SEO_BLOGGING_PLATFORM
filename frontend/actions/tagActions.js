@@ -16,7 +16,7 @@ export const createTag = (tag, token) => {
 };
 
 export const getTags = () => {
-	return fetch(`${API}/tag/listAllTags`, { method: 'GET' })
+	return fetch(`${API}/tag/tags`, { method: 'GET' })
 		.then(response => response.json())
 		.catch(err => console.log(err));
 };

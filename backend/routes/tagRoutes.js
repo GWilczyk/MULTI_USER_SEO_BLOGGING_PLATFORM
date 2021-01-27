@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.delete('/:slug', requireSignedIn, adminMiddleware, deleteTag);
 
-router.get('/listAllTags', listTags);
+router.get('/tags', listTags);
 
 router.get('/:slug', readTag);
 

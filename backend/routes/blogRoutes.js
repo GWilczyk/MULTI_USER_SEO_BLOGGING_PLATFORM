@@ -15,7 +15,7 @@ router.post('/', requireSignedIn, adminMiddleware, createBlog);
 
 router.delete('/:slug', requireSignedIn, adminMiddleware, deleteBlog);
 
-router.get('/listAllBlogs', listBlogs);
+router.get('/blogs', listBlogs);
 
 router.get('/:slug', readBlog);
 

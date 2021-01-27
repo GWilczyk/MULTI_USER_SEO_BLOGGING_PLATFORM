@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.delete('/:slug', requireSignedIn, adminMiddleware, deleteCategory);
 
-router.get('/listAllCategories', listCategories);
+router.get('/categories', listCategories);
 
 router.get('/:slug', readCategory);
 

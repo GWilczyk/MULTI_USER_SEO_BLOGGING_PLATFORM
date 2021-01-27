@@ -16,7 +16,7 @@ export const createCategory = (category, token) => {
 };
 
 export const getCategories = () => {
-	return fetch(`${API}/category/listAllCategories`, { method: 'GET' })
+	return fetch(`${API}/category/categories`, { method: 'GET' })
 		.then(response => response.json())
 		.catch(err => console.log(err));
 };
