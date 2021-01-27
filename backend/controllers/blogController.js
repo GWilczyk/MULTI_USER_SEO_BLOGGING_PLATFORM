@@ -96,6 +96,24 @@ export const createBlog = (req, res) => {
 
 export const deleteBlog = (req, res) => {};
 
-export const listBlogs = (req, res) => {};
+export const listBlogs = (req, res) => {
+	Blog.find({})
+		.populate('categories', '_id name slug')
+		.populate('postedBy', '_id name username')
+		.populate('tags', '_id name slug')
+		.select(
+			'_id categories createdAt excerpt postedBy slug tags title updatedAt'
+		)
+		.exec((err, data) => {
+			if (err) {
+				return res.json({ error: dbErrorHandler(err) });
+			}
+			res.json(data);
+		});
+};
+
+export const listBlogsCategoriesTags = (req, res) => {};
 
 export const readBlog = (req, res) => {};
+
+export const updateBlog = (req, res) => {};

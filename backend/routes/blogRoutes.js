@@ -4,7 +4,9 @@ import {
 	createBlog,
 	deleteBlog,
 	listBlogs,
+	listBlogsCategoriesTags,
 	readBlog,
+	updateBlog,
 } from '../controllers/blogController.js';
 import {
 	adminMiddleware,
@@ -17,6 +19,10 @@ router.delete('/:slug', requireSignedIn, adminMiddleware, deleteBlog);
 
 router.get('/blogs', listBlogs);
 
+router.post('/blogs-categories-tags', listBlogsCategoriesTags);
+
 router.get('/:slug', readBlog);
+
+router.put('/:slug', requireSignedIn, adminMiddleware, updateBlog);
 
 export default router;
