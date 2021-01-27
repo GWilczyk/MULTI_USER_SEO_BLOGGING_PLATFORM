@@ -13,6 +13,7 @@ import { getCategories } from '../../actions/categoryActions';
 import { getCookie } from '../../actions/auth';
 import { getTags } from '../../actions/tagActions';
 
+import { QuillFormats, QuillModules } from '../../helpers/quillHelpers';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 import '../../node_modules/react-quill/dist/quill.snow.css';
@@ -77,8 +78,8 @@ const BlogCreate = ({ router }) => {
 
 				<div className='form-group'>
 					<ReactQuill
-						formats={BlogCreate.formats}
-						modules={BlogCreate.modules}
+						formats={QuillFormats}
+						modules={QuillModules}
 						onChange={handleReactQuill}
 						placeholder='Write something amazing…'
 						value={body}
@@ -189,6 +190,24 @@ const BlogCreate = ({ router }) => {
 		);
 	};
 
+	const showError = () => (
+		<div
+			className='alert alert-danger my-3'
+			style={{ display: error ? '' : 'none' }}
+		>
+			{error}
+		</div>
+	);
+
+	const showSuccess = () => (
+		<div
+			className='alert alert-success my-3'
+			style={{ display: success ? '' : 'none' }}
+		>
+			{success}
+		</div>
+	);
+
 	const showTags = () => {
 		return (
 			tags &&
@@ -212,14 +231,12 @@ const BlogCreate = ({ router }) => {
 			<div className='row'>
 				<div className='col-md-8'>
 					{createBlogForm()}
-					<hr />
-					{JSON.stringify(title)}
-					<hr />
-					{JSON.stringify(body)}
+					{showError()}
+					{showSuccess()}
 				</div>
 				<div className='col-md-4'>
 					<div className='form-group pb-2'>
-						<h5>Featured Images</h5>
+						<h5>Featured Image</h5>
 						<hr />
 						<small className='text-muted'>Max size: 1Mo</small>
 						<label className='btn btn-outline-info'>
@@ -248,34 +265,5 @@ const BlogCreate = ({ router }) => {
 		</div>
 	);
 };
-
-BlogCreate.modules = {
-	toolbar: [
-		[{ header: '1' }, { header: '2' }, { header: [3, 4, 5, 6] }, { font: [] }],
-		[{ size: [] }],
-		['bold', 'italic', 'underline', 'strike', 'blockquote'],
-		[{ list: 'ordered' }, { list: 'bullet' }],
-		['link', 'image', 'video'],
-		['clean'],
-		['code-block'],
-	],
-};
-
-BlogCreate.formats = [
-	'blockquote',
-	'bold',
-	'bullet',
-	'code-block',
-	'font',
-	'header',
-	'image',
-	'italic',
-	'link',
-	'list',
-	'size',
-	'strike',
-	'underline',
-	'video',
-];
 
 export default withRouter(BlogCreate);
