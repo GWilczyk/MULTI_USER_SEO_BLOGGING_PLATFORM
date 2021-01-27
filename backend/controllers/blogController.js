@@ -108,11 +108,59 @@ export const listBlogs = (req, res) => {
 			if (err) {
 				return res.json({ error: dbErrorHandler(err) });
 			}
+
 			res.json(data);
 		});
 };
 
-export const listBlogsCategoriesTags = (req, res) => {};
+export const listBlogsCategoriesTags = (req, res) => {
+	let limit = req.body.limit ? parseInt(req.body.limit) : 10;
+	let skip = req.body.skip ? parseInt(req.body.skip) : 0;
+
+	let blogs;
+	let categories;
+	let tags;
+
+	// Get all Blogs
+	Blog.find({})
+		.populate('categories', '_id name slug')
+		.populate('postedBy', '_id name profile username')
+		.populate('tags', '_id name slug')
+		.sort({ createdAt: -1 })
+		.skip(skip)
+		.limit(limit)
+		.select(
+			'_id categories createdAt excerpt postedBy slug tags title updatedAt'
+		)
+		.exec((err, allBlogs) => {
+			if (err) {
+				return res.json({ error: dbErrorHandler(err) });
+			}
+
+			blogs = allBlogs;
+
+			// Get all Categories
+			Category.find({}).exec((err, allCategories) => {
+				if (err) {
+					return res.json({ error: dbErrorHandler(err) });
+				}
+
+				categories = allCategories;
+
+				// Get all Tags
+				Tag.find({}).exec((err, allTags) => {
+					if (err) {
+						return res.json({ error: dbErrorHandler(err) });
+					}
+
+					tags = allTags;
+
+					// Return all Blogs, Categories, Tags as response
+					res.json({ blogs, categories, tags, size: blogs.length });
+				});
+			});
+		});
+};
 
 export const readBlog = (req, res) => {};
 
