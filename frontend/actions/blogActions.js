@@ -6,7 +6,6 @@ export const createBlog = (blog, token) => {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
-			'Content-Type': 'multipart/form-data',
 			Authorization: `Bearer ${token}`,
 		},
 		body: blog,
