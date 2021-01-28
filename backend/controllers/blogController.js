@@ -191,6 +191,21 @@ export const readBlog = (req, res) => {
 		});
 };
 
+export const retrievePhoto = (req, res) => {
+	const slug = req.params.slug.toLowerCase();
+
+	Blog.findOne({ slug })
+		.select('photo')
+		.exec((err, blog) => {
+			if (err || !blog) {
+				return res.status(400).json({ error: dbErrorHandler(err) });
+			}
+
+			res.set('Content-Type', blog.photo.contentType);
+			return res.send(blog.photo.data);
+		});
+};
+
 export const updateBlog = (req, res) => {
 	const slug = req.params.slug.toLowerCase();
 
@@ -242,6 +257,7 @@ export const updateBlog = (req, res) => {
 					return res.status(400).json({ error: dbErrorHandler(err) });
 				}
 
+				// result.photo = undefined;
 				res.json(result);
 			});
 		});

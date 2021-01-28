@@ -6,6 +6,7 @@ import {
 	listBlogs,
 	listBlogsCategoriesTags,
 	readBlog,
+	retrievePhoto,
 	updateBlog,
 } from '../controllers/blogController.js';
 import {
@@ -22,6 +23,8 @@ router.get('/blogs', listBlogs);
 router.post('/blogs-categories-tags', listBlogsCategoriesTags);
 
 router.get('/:slug', readBlog);
+
+router.get('/photo/:slug', retrievePhoto);
 
 router.put('/:slug', requireSignedIn, adminMiddleware, updateBlog);
 
