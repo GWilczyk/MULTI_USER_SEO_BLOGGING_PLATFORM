@@ -191,4 +191,59 @@ export const readBlog = (req, res) => {
 		});
 };
 
-export const updateBlog = (req, res) => {};
+export const updateBlog = (req, res) => {
+	const slug = req.params.slug.toLowerCase();
+
+	Blog.findOne({ slug }).exec((err, oldBlog) => {
+		if (err) {
+			return res.json({ error: dbErrorHandler(err) });
+		}
+
+		let form = new formidable.IncomingForm();
+		form.keepExtensions = true;
+		form.parse(req, (err, fields, files) => {
+			if (err) {
+				return res.status(400).json({ error: 'Image could not upload.' });
+			}
+
+			// We do NOT change slug for SEO concerns!
+			let slugBeforeMerge = oldBlog.slug;
+			oldBlog = _.merge(oldBlog, fields);
+			oldBlog.slug = slugBeforeMerge;
+
+			const { body, categories, tags } = fields;
+
+			if (body) {
+				oldBlog.excerpt = smartTrim(body, 320, ' ', ' …');
+				oldBlog.mdesc = stripHtml(body.substring(0, 160)).result;
+			}
+
+			if (categories) {
+				oldBlog.categories = categories.split(',');
+			}
+
+			if (tags) {
+				oldBlog.tags = tags.split(',');
+			}
+
+			if (files.photo) {
+				if (files.photo.size > 1000000) {
+					return res
+						.status(400)
+						.json({ error: 'Image should be less than 1Mo in size' });
+				}
+
+				oldBlog.photo.data = fs.readFileSync(files.photo.path);
+				oldBlog.photo.contentType = files.photo.type;
+			}
+
+			oldBlog.save((err, result) => {
+				if (err) {
+					return res.status(400).json({ error: dbErrorHandler(err) });
+				}
+
+				res.json(result);
+			});
+		});
+	});
+};
