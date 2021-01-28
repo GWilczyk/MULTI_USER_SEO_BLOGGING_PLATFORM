@@ -94,7 +94,17 @@ export const createBlog = (req, res) => {
 	});
 };
 
-export const deleteBlog = (req, res) => {};
+export const deleteBlog = (req, res) => {
+	const slug = req.params.slug;
+
+	Blog.findOneAndRemove({ slug }).exec((err, data) => {
+		if (err) {
+			return res.json({ error: dbErrorHandler(err) });
+		}
+
+		res.json({ message: 'Blog deleted successfully.' });
+	});
+};
 
 export const listBlogs = (req, res) => {
 	Blog.find({})
@@ -162,6 +172,23 @@ export const listBlogsCategoriesTags = (req, res) => {
 		});
 };
 
-export const readBlog = (req, res) => {};
+export const readBlog = (req, res) => {
+	const slug = req.params.slug.toLowerCase();
+
+	Blog.findOne({ slug })
+		.populate('categories', '_id name slug')
+		.populate('postedBy', '_id name username')
+		.populate('tags', '_id name slug')
+		.select(
+			'_id body categories createdAt mdesc mtitle postedBy slug tags title updatedAt'
+		)
+		.exec((err, blog) => {
+			if (err) {
+				return res.json({ error: dbErrorHandler(err) });
+			}
+
+			res.json(blog);
+		});
+};
 
 export const updateBlog = (req, res) => {};
