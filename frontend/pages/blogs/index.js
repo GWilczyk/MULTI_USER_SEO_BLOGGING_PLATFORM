@@ -139,7 +139,7 @@ const Blogs = ({
 						</header>
 					</div>
 
-					<div className='container-fluid'>{showAllBlogs()}</div>
+					<div className='container-fluid '>{showAllBlogs()}</div>
 					<div className='container-fluid'>{showLoadedBlogs()}</div>
 					<div className='text-center py-5'>{loadMoreButton()}</div>
 				</main>

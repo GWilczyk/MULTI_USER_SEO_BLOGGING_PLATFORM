@@ -65,9 +65,7 @@ const Card = ({ blog }) => {
 
 				<div className='col-md-8'>
 					<section>
-						<div className='pb-3'>
-							{excerpt === undefined ? 'rien' : renderHTML(excerpt)}
-						</div>
+						<div className='pb-3'>{renderHTML(excerpt)}</div>
 						<Link href={`/blogs/${slug}`}>
 							<a className='btn btn-primary pt-2'>Read more</a>
 						</Link>
