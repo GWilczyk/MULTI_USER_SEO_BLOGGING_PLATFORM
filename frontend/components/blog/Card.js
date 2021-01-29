@@ -6,6 +6,7 @@ import { API } from '../../config';
 const Card = ({ blog }) => {
 	const {
 		excerpt,
+		photo,
 		postedBy: { name },
 		slug,
 		title,
@@ -50,8 +51,17 @@ const Card = ({ blog }) => {
 				<br />
 			</section>
 
-			<div className='row'>
-				<div className='col-md-4'>Image</div>
+			<div className='row mt-3'>
+				<div className='col-md-4'>
+					<section>
+						<img
+							className='img img-fluid'
+							style={{ maxHeight: '150px', width: 'auto' }}
+							src={`${API}/blog/photo/${slug}`}
+							alt={title}
+						/>
+					</section>
+				</div>
 
 				<div className='col-md-8'>
 					<section>

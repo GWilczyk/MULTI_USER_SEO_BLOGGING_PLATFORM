@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import Card from '../../components/blog/Card';
 import Layout from '../../components/Layout';
-import { getBlogsCategoriesTags } from '../../actions/blogActions';
+import { getBlogsCategoriesTags, getPhoto } from '../../actions/blogActions';
 
 const Blogs = ({ blogs, categories, size, tags }) => {
 	const showAllBlogs = () => {
