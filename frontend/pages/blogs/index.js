@@ -8,7 +8,20 @@ import Card from '../../components/blog/Card';
 import Layout from '../../components/Layout';
 import { getBlogsCategoriesTags } from '../../actions/blogActions';
 
-const Blogs = ({ blogs, categories, router, size, tags }) => {
+const Blogs = ({
+	blogs,
+	blogsLimit,
+	blogsSkip,
+	categories,
+	router,
+	tags,
+	totalBlogs,
+}) => {
+	const [limit, setLimit] = useState(blogsLimit);
+	const [loadedBlogs, setLoadedBlogs] = useState([]);
+	const [size, setSize] = useState(totalBlogs);
+	const [skip, setSkip] = useState(blogsSkip);
+
 	const head = () => (
 		<Head>
 			<title>Programming blogs | {APP_NAME}</title>
@@ -40,6 +53,33 @@ const Blogs = ({ blogs, categories, router, size, tags }) => {
 		</Head>
 	);
 
+	const loadMore = () => {
+		let loadFrom = skip + limit;
+		getBlogsCategoriesTags(limit, loadFrom).then(data => {
+			if (data.error) {
+				console.log(data.error);
+			} else {
+				setLoadedBlogs(loadedBlogs => [...loadedBlogs, ...data.blogs]);
+				setSize(size => data.size);
+				setSkip(skip => loadFrom);
+			}
+		});
+	};
+
+	const loadMoreButton = () => {
+		return (
+			size > 0 &&
+			size >= limit && (
+				<button
+					className='btn btn-outline-info btn-lg mt-2 mb-5'
+					onClick={loadMore}
+				>
+					Load More
+				</button>
+			)
+		);
+	};
+
 	const showAllBlogs = () => {
 		return blogs.map((blog, index) => {
 			return (
@@ -67,6 +107,17 @@ const Blogs = ({ blogs, categories, router, size, tags }) => {
 		));
 	};
 
+	const showLoadedBlogs = () => {
+		return loadedBlogs.map((blog, index) => {
+			return (
+				<article key={index}>
+					<Card blog={blog} />
+					<hr />
+				</article>
+			);
+		});
+	};
+
 	return (
 		<>
 			{head()}
@@ -88,11 +139,9 @@ const Blogs = ({ blogs, categories, router, size, tags }) => {
 						</header>
 					</div>
 
-					<div className='container-fluid'>
-						<div className='row'>
-							<div className='col-md-12'>{showAllBlogs()}</div>
-						</div>
-					</div>
+					<div className='container-fluid'>{showAllBlogs()}</div>
+					<div className='container-fluid'>{showLoadedBlogs()}</div>
+					<div className='text-center py-5'>{loadMoreButton()}</div>
 				</main>
 			</Layout>
 		</>
@@ -100,16 +149,20 @@ const Blogs = ({ blogs, categories, router, size, tags }) => {
 };
 
 Blogs.getInitialProps = () => {
-	return getBlogsCategoriesTags().then(data => {
+	let limit = 2;
+	let skip = 0;
+	return getBlogsCategoriesTags(limit, skip).then(data => {
 		if (data.error) {
 			console.log(data.error);
 		} else {
 			const { blogs, categories, size, tags } = data;
 			return {
 				blogs,
+				blogsLimit: limit,
+				blogsSkip: skip,
 				categories,
 				tags,
-				size,
+				totalBlogs: size,
 			};
 		}
 	});

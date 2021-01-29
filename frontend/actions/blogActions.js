@@ -20,10 +20,16 @@ export const getBlogs = () => {
 		.catch(err => console.log(err));
 };
 
-export const getBlogsCategoriesTags = () => {
+export const getBlogsCategoriesTags = (limit, skip) => {
+	const data = { limit, skip };
+
 	return fetch(`${API}/blog/blogs-categories-tags`, {
 		method: 'POST',
-		headers: { Accept: 'application/json' },
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(data),
 	})
 		.then(response => response.json())
 		.catch(err => console.log(err));
