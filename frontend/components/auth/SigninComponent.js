@@ -22,7 +22,7 @@ const SigninComponent = () => {
 		} else if (isAuth() && isAuth().role !== 1) {
 			Router.push('/UserDashboard');
 		} else {
-			Router.push('/signin');
+			Router.push('/auth/signin');
 		}
 	}, []);
 

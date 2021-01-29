@@ -14,10 +14,10 @@
     "static/development/_ssgManifest.js"
   ],
   "pages": {
-    "/AdminDashboard": [
+    "/UserDashboard": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/AdminDashboard.js"
+      "static/chunks/pages/UserDashboard.js"
     ],
     "/_app": [
       "static/chunks/main.js",
@@ -29,12 +29,10 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/crud/BlogCRUD": [
+    "/blogs": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/css/styles.chunk.css",
-      "static/chunks/styles.js",
-      "static/chunks/pages/crud/BlogCRUD.js"
+      "static/chunks/pages/blogs.js"
     ]
   },
   "ampFirstPages": []

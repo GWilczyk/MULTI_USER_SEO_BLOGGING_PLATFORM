@@ -23,7 +23,7 @@ const SignupComponent = () => {
 		} else if (isAuth() && isAuth().role !== 1) {
 			Router.push('/UserDashboard');
 		} else {
-			Router.push('/signup');
+			Router.push('/auth/signup');
 		}
 	}, []);
 

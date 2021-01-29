@@ -20,6 +20,15 @@ export const getBlogs = () => {
 		.catch(err => console.log(err));
 };
 
+export const getBlogsCategoriesTags = () => {
+	return fetch(`${API}/blog/blogs-categories-tags`, {
+		method: 'POST',
+		headers: { Accept: 'application/json' },
+	})
+		.then(response => response.json())
+		.catch(err => console.log(err));
+};
+
 export const getBlog = slug => {
 	return fetch(`${API}/blog/${slug}`, { method: 'GET' })
 		.then(response => response.json())

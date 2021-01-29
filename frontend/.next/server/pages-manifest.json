@@ -2,6 +2,6 @@
   "/_document": "pages/_document.js",
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
-  "/AdminDashboard": "pages/AdminDashboard.js",
-  "/crud/BlogCRUD": "pages/crud/BlogCRUD.js"
+  "/UserDashboard": "pages/UserDashboard.js",
+  "/blogs": "pages/blogs.js"
 }
