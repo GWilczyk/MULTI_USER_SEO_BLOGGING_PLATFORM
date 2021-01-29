@@ -47,7 +47,7 @@ export const createBlog = (req, res) => {
 		blog.excerpt = smartTrim(body, 320, ' ', ' …');
 		blog.mdesc = stripHtml(body.substring(0, 160)).result;
 		blog.mtitle = `${title} | ${process.env.APP_NAME}`;
-		blog.postedBy = req.user._id;
+		blog.postedBy = req.user.id;
 		blog.slug = slugify(title, { lower: true });
 		blog.title = title;
 

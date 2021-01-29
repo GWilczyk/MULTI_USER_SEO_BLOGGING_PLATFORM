@@ -27,7 +27,7 @@ Router.onRouteChangeError = url => NProgress.done();
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const toggle = () => setIsOpen(prevState => !prevState);
-	const handleSignOut = () => signout(() => Router.push('/signin'));
+	const handleSignOut = () => signout(() => Router.push('/auth/signin'));
 
 	return (
 		<div>
@@ -43,7 +43,7 @@ const Header = () => {
 						<>
 							<NavItem>
 								<Link href='/blogs'>
-									<NavLink>Blogs</NavLink>
+									<NavLink style={{ cursor: 'pointer' }}>Blogs</NavLink>
 								</Link>
 							</NavItem>
 						</>
