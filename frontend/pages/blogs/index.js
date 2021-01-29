@@ -1,12 +1,45 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { withRouter } from 'next/router';
 import { useState } from 'react';
+import { API, DOMAIN, APP_NAME } from '../../config';
 
 import Card from '../../components/blog/Card';
 import Layout from '../../components/Layout';
-import { getBlogsCategoriesTags, getPhoto } from '../../actions/blogActions';
+import { getBlogsCategoriesTags } from '../../actions/blogActions';
 
-const Blogs = ({ blogs, categories, size, tags }) => {
+const Blogs = ({ blogs, categories, router, size, tags }) => {
+	const head = () => (
+		<Head>
+			<title>Programming blogs | {APP_NAME}</title>
+			<meta
+				name='description'
+				content='Programming blogs and tutorials on React, Node, Next and Web Development'
+			/>
+			<link rel='canonical' href={`${DOMAIN}${router.pathname}`} />
+			<meta
+				property='og:title'
+				content={`Latest Web Development Tutorials | ${APP_NAME}`}
+			/>
+			<meta
+				property='og:description'
+				content='Programming blogs and tutorials on React, Node, Next and Web Development'
+			/>
+			<meta property='og:type' content='website' />
+			<meta property='og:url' content={`${DOMAIN}${router.pathname}`} />
+			<meta property='og:site_name' content={`${APP_NAME}`} />
+			<meta
+				property='og:image'
+				content={`${DOMAIN}/static/images/seo_image.jpg`}
+			/>
+			<meta
+				property='og:image:secure_url'
+				content={`${DOMAIN}/static/images/seo_image.jpg`}
+			/>
+			<meta property='og:image:type' content='image/jpg' />
+		</Head>
+	);
+
 	const showAllBlogs = () => {
 		return blogs.map((blog, index) => {
 			return (
@@ -35,30 +68,34 @@ const Blogs = ({ blogs, categories, size, tags }) => {
 	};
 
 	return (
-		<Layout>
-			<main>
-				<div className='container-fluid'>
-					<header>
-						<div className='col-md-12 pt-3'>
-							<h1 className='display-4 font-weight-bold text-center'>
-								Programming Blogs and Tutorials
-							</h1>
-						</div>
-						<section className='pb-5 text-center'>
-							{showAllCategories()}
-							<br />
-							{showAllTags()}
-						</section>
-					</header>
-				</div>
+		<>
+			{head()}
+			<Layout>
+				<main>
+					<div className='container-fluid'>
+						<header>
+							<div className='col-md-12 pt-3'>
+								<h1 className='display-4 font-weight-bold text-center'>
+									Programming Blogs and Tutorials
+								</h1>
+							</div>
 
-				<div className='container-fluid'>
-					<div className='row'>
-						<div className='col-md-12'>{showAllBlogs()}</div>
+							<section className='pb-5 text-center'>
+								{showAllCategories()}
+								<br />
+								{showAllTags()}
+							</section>
+						</header>
 					</div>
-				</div>
-			</main>
-		</Layout>
+
+					<div className='container-fluid'>
+						<div className='row'>
+							<div className='col-md-12'>{showAllBlogs()}</div>
+						</div>
+					</div>
+				</main>
+			</Layout>
+		</>
 	);
 };
 
@@ -78,4 +115,4 @@ Blogs.getInitialProps = () => {
 	});
 };
 
-export default Blogs;
+export default withRouter(Blogs);

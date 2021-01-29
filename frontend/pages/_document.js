@@ -16,7 +16,7 @@ class MyDocument extends Document {
 						integrity='sha512-42kB9yDlYiCEfx2xVwq0q7hT4uf26FUgSIZBK8uiaEnTdShXjwr8Ip1V4xGJMg3mHkUt9nNuTDxunHF0/EgxLQ=='
 						crossOrigin='anonymous'
 					/>
-					<link rel='stylesheet' href='/static/styles.css' />
+					<link rel='stylesheet' href='/static/css/styles.css' />
 				</Head>
 				<body>
 					<Main />
