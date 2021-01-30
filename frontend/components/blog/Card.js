@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import renderHTML from 'react-render-html';
 import moment from 'moment';
+
 import { API } from '../../config';
+import showBlogCategories from '../../helpers/showBlogCategories';
+import showBlogTags from '../../helpers/showBlogTags';
 
 const Card = ({ blog }) => {
 	const {
@@ -12,22 +15,6 @@ const Card = ({ blog }) => {
 		title,
 		updatedAt,
 	} = blog;
-
-	const showBlogCategories = blog => {
-		return blog.categories.map(({ name, slug }, index) => (
-			<Link href={`/categories/${slug}`} key={index}>
-				<a className='btn btn-primary mx-1 mt-3'>{name}</a>
-			</Link>
-		));
-	};
-
-	const showBlogTags = blog => {
-		return blog.tags.map(({ name, slug }, index) => (
-			<Link href={`/tags/${slug}`} key={index}>
-				<a className='btn btn-outline-primary mx-1 mt-3'>{name}</a>
-			</Link>
-		));
-	};
 
 	return (
 		<div className='lead pb-4'>
